@@ -1,0 +1,49 @@
+function [O]=cluster(C,I,dt)
+mlock
+I=mean(I);
+si=size(C);
+C=mean(C);
+dt=mean(dt);
+persistent St
+if isempty(St)
+St=[0,1,0,0];
+end
+%----------------------------------------%
+%------Parameters------------------------%
+%----------------------------------------%
+omega=60.022;
+kco=50; koi1=0.05; koi2=40; ki1c=0.005;ki2c=2;
+NVc=1;KD=0.1;
+%--------------------------------%
+%-----Calculating propensities---%
+%--------------------------------%
+Pco=kco*C*((((I)/(KD+I)))^4)*(NVc-St(1)-St(3)-St(4))*dt;
+Poi1=(koi1*St(1)*(round(C*omega)*(round(C*omega)-1)*(round(C*omega)-2))/(omega^3))*dt;
+S2=Pco+Poi1;
+Poi2=koi2*St(1)*dt;
+S3=S2+Poi2;
+Pi1c=ki1c*St(3)*dt;
+S4=S3+Pi1c;
+Pi2c=ki2c*St(4)*dt;
+S5=S4+Pi2c;
+Pnot=1-S5;
+rr=rand;
+if rr<Pco
+    St(:)=0;
+    St(1)=1;
+elseif rr<S2
+    St(:)=0;
+    St(3)=1;
+elseif rr<S3
+    St(:)=0;
+    St(4)=1;
+elseif rr<S4
+    St(:)=0;
+    St(2)=1;
+elseif rr<S5
+    St(:)=0;
+    St(2)=1;
+elseif rr<Pnot
+    St=St;
+end
+O=St(1)*ones(si);
