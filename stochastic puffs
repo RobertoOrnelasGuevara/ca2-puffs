@@ -1,4 +1,4 @@
-function [tv]=StochPuffs(I)
+function [tv]=StochPuffs
 
 %----------------------%
 %------Parameters------%
@@ -12,7 +12,7 @@ omega=(6.022*10^(23))*Vc*10^(-6);
 %------Kinetic constants------%
 kco=zeros(N1,N2);koi1=zeros(N1,N2);koi2=zeros(N1,N2);ki1c=zeros(N1,N2);ki2c=zeros(N1,N2);
 kco(5,5)=50;koi1(5,5)=0.05; koi2(5,5)=40;ki1c(5,5)=0.005;ki2c(5,5)=2;
-
+I=0.2;
 vp=0.9;
 Kp=0.1;
 Cab=0.04;
